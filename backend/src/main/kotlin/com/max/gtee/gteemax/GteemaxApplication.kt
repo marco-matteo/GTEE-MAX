@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class GteemaxApplication
 
 fun main(args: Array<String>) {
-	runApplication<GteemaxApplication>(*args)
+    runApplication<GteemaxApplication>(*args)
 }
