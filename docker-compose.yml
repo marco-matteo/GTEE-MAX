@@ -1,0 +1,10 @@
+services:
+  db:
+    container_name: gteemax-db
+    image: postgres:17
+    environment:
+      - POSTGRES_PASSWORD=gteemax
+    volumes:
+      - ./postgres-data:/data/postgres
+    ports:
+      - "5432:5432"
