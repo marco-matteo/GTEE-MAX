@@ -1,12 +1,10 @@
 services:
   db:
-    container_name: postgres
+    container_name: gteemax-db
     image: postgres:17
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - PGDATA=/data/postgres
+      - POSTGRES_PASSWORD=gteemax
     volumes:
       - ./postgres-data:/data/postgres
     ports:
-      - "6969:5432"
+      - "5432:5432"
