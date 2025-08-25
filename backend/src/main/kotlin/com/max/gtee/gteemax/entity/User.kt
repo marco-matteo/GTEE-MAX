@@ -9,17 +9,13 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "user_account")
-data class User (
+data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Int? = null,
-
     val username: String,
-
     val password: String,
-
     val views: Int = 0,
-
     @OneToOne
     val favorite: Video,
 )

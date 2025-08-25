@@ -8,12 +8,9 @@ import jakarta.persistence.Id
 @Entity
 data class Video(
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Int? = null,
-
     val path: String?,
-
     val views: Int,
-
     val caption: String?,
 )
