@@ -43,6 +43,10 @@ ktlint {
     outputToConsole.set(true)
 }
 
+tasks.test {
+    systemProperty("spring.profiles.active", "test")
+}
+
 repositories {
     mavenCentral()
 }
