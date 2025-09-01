@@ -19,6 +19,26 @@ java {
     }
 }
 
+spotbugs {
+    excludeFilter.set(file("config/spotbugs/spotbugs-exclude.xml"))
+}
+
+tasks {
+    withType<com.github.spotbugs.snom.SpotBugsTask>().configureEach {
+        reports.create("html") {
+            required = true
+        }
+    }
+    withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            txt.required.set(false)
+            sarif.required.set(true) // Für GitHub Code Scanning
+        }
+    }
+}
+
 detekt {
     config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
@@ -43,6 +63,10 @@ ktlint {
     outputToConsole.set(true)
 }
 
+tasks.test {
+    systemProperty("spring.profiles.active", "test")
+}
+
 repositories {
     mavenCentral()
 }
@@ -52,6 +76,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
