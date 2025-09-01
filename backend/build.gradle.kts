@@ -19,6 +19,26 @@ java {
     }
 }
 
+spotbugs {
+    excludeFilter.set(file("config/spotbugs/spotbugs-exclude.xml"))
+}
+
+tasks {
+    withType<com.github.spotbugs.snom.SpotBugsTask>().configureEach {
+        reports.create("html") {
+            required = true
+        }
+    }
+    withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            txt.required.set(false)
+            sarif.required.set(true) // Für GitHub Code Scanning
+        }
+    }
+}
+
 detekt {
     config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
