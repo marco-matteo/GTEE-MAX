@@ -10,3 +10,9 @@ spring:
       ddl-auto: update
     properties:
       hibernate.format_sql: true
+gtee:
+  video-dir: video
+debug: true
+logging:
+  level:
+    web: trace
