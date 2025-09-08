@@ -5,6 +5,8 @@ services:
     environment:
       - POSTGRES_PASSWORD=gteemax
     volumes:
-      - ./postgres-data:/data/postgres
+      - gteemax-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+volumes:
+  gteemax-db:

@@ -1,5 +1,6 @@
 package com.max.gtee.gteemax.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -13,9 +14,10 @@ data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Int? = null,
+    @Column(unique = true)
     val username: String,
     val password: String,
     val views: Int = 0,
     @OneToOne
-    val favorite: Video,
+    val favorite: Video? = null,
 )
