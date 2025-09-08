@@ -9,16 +9,15 @@ import org.hibernate.boot.model.naming.IllegalIdentifierException
 import org.springframework.stereotype.Component
 import java.util.Date
 
-const val EXPIRATION = 3600000
+const val EXPIRATION = 1000 * 60 * 60
 
 @Component
 final class JwtUtil {
     private val secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
-    private val expirationMs = EXPIRATION
 
     fun generateToken(username: String): String {
         val now = Date()
-        val expiryDate = Date(now.time + expirationMs)
+        val expiryDate = Date(now.time + EXPIRATION)
 
         return Jwts
             .builder()

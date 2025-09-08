@@ -10,7 +10,7 @@ class CustomUserDetailsService(
     val repository: UserRepository,
 ) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = repository.findByUsername(username)
+        val user = repository.findById(username).get()
         return org.springframework.security.core.userdetails.User(
             user.username,
             user.password,

@@ -16,7 +16,7 @@ class UserService(
     val jwtUtil: JwtUtil,
     private val security: SecurityConfig,
 ) {
-    fun getUser(id: Int): User = repository.findById(id).get()
+    fun getUser(username: String): User = repository.findById(username).get()
 
     fun login(
         username: String,

@@ -1,5 +1,6 @@
 package com.max.gtee.gteemax.controller
 
+import com.max.gtee.gteemax.dto.AuthRequestBody
 import com.max.gtee.gteemax.entity.User
 import com.max.gtee.gteemax.service.UserService
 import org.springframework.http.ResponseEntity
@@ -10,20 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-data class AuthRequestBody(
-    val username: String,
-    val password: String,
-)
-
 @RequestMapping("/user")
 @RestController
 class UserController(
     val service: UserService,
 ) {
-    @GetMapping("/{id}")
+    @GetMapping("/{username}")
     fun getUser(
-        @PathVariable id: Int,
-    ): User = service.getUser(id)
+        @PathVariable username: String,
+    ): User = service.getUser(username)
 
     @PostMapping("/login")
     fun login(
