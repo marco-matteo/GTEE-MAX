@@ -8,6 +8,7 @@
 - Comments EXPLOSIV, 67-Energy only.
 - Scroll rein, speedrun die Zeit - bevor alle so tun, sie können ein DAY-ONE sein. 
 - **Download für +Aura** 🤑
+- Тотя ❤️
 
 ### Projektziele:
 1. Implementierung eines Login-Systems mit Benutzername und Passwort.
