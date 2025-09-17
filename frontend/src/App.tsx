@@ -1,6 +1,8 @@
 import ScrollButton from "./components/buttons/ScrollButton.tsx";
 import Profile from "./components/Profile/Profile.tsx";
 import emptyProfile from "./assets/empty_profile.png";
+import LikeButton from "./components/buttons/LikeButton.tsx";
+import CommentButton from "./components/buttons/CommentButton.tsx";
 
 export default function App() {
   return (
@@ -18,6 +20,12 @@ export default function App() {
             isUp={false}
             className="h-16 w-16 absolute -right-20 mt-20"
           />
+          <div className="absolute bottom-28 right-4">
+            <LikeButton />
+          </div>
+          <div className="absolute bottom-4 right-4">
+            <CommentButton />
+          </div>
         </div>
       </div>
     </div>
