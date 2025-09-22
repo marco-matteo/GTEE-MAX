@@ -1,5 +1,6 @@
-package com.max.gtee.gteemax.config
+package com.max.gtee.gteemax.util
 
+import com.max.gtee.gteemax.config.JwtUtil
 import com.max.gtee.gteemax.service.CustomUserDetailsService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -9,8 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-
-const val START_INDEX = 7
 
 @Component
 class JwtAuthenticationFilter(
@@ -25,7 +24,7 @@ class JwtAuthenticationFilter(
         val authHeader = request.getHeader("Authorization")
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            val token = authHeader.substring(START_INDEX)
+            val token = authHeader.removePrefix("Bearer ")
             val username = jwtUtil.getUsernameFromToken(token)
 
             if (SecurityContextHolder.getContext().authentication == null) {

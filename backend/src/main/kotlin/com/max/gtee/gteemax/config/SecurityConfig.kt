@@ -1,6 +1,7 @@
 package com.max.gtee.gteemax.config
 
 import com.max.gtee.gteemax.service.CustomUserDetailsService
+import com.max.gtee.gteemax.util.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
