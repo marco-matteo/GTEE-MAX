@@ -1,4 +1,4 @@
-package com.max.gtee.gteemax.config
+package com.max.gtee.gteemax.util
 
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException

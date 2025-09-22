@@ -11,11 +11,14 @@ import java.nio.file.Paths
 
 @Service
 class FileRepository(
-    config: GteeConfig
-){
+    config: GteeConfig,
+) {
     private val videoDir = Paths.get(config.dir)
 
-    fun save(video: Video, file: MultipartFile) {
+    fun save(
+        video: Video,
+        file: MultipartFile,
+    ) {
         val path = videoDir.resolve(video.path)
         Files.createDirectories(path.parent)
         file.transferTo(path)

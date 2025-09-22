@@ -1,6 +1,5 @@
 package com.max.gtee.gteemax.util
 
-import com.max.gtee.gteemax.config.JwtUtil
 import com.max.gtee.gteemax.service.CustomUserDetailsService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

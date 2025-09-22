@@ -1,9 +1,9 @@
 package com.max.gtee.gteemax.service
 
-import com.max.gtee.gteemax.config.JwtUtil
 import com.max.gtee.gteemax.config.SecurityConfig
 import com.max.gtee.gteemax.entity.User
 import com.max.gtee.gteemax.repository.UserRepository
+import com.max.gtee.gteemax.util.JwtUtil
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder

@@ -4,26 +4,38 @@ import com.max.gtee.gteemax.config.GteeConfig
 import com.max.gtee.gteemax.dto.UploadVideoDto
 import com.max.gtee.gteemax.dto.VideoDto
 import com.max.gtee.gteemax.entity.Video
+import com.max.gtee.gteemax.exception.MissingPermissionException
 import com.max.gtee.gteemax.repository.FileRepository
 import com.max.gtee.gteemax.repository.VideoRepository
+import com.max.gtee.gteemax.util.JwtUtil
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 import kotlin.random.Random
 
 @Service
-class VideoService (
+class VideoService(
     private val repository: VideoRepository,
     private val fileRepository: FileRepository,
     private val config: GteeConfig,
+    private val userService: UserService,
+    private val jwtUtil: JwtUtil,
 ) {
-        private val random: Random = config.seed?.let { Random(it) } ?: Random.Default
+    private val random: Random = config.seed?.let { Random(it) } ?: Random.Default
 
-        fun uploadVideo(uploadVideo: UploadVideoDto): VideoDto {
-        val video = repository.save(Video(
-            caption = uploadVideo.caption,
-            creator = uploadVideo.creatorId//User(uploadVideo.creatorId, "user", "", 0, null),
-        ))
+    fun uploadVideo(
+        uploadVideo: UploadVideoDto,
+        authHeader: String,
+    ): VideoDto {
+        val video =
+            repository.save(
+                Video(
+                    caption = uploadVideo.caption,
+                    creator = userService.getUser(uploadVideo.creatorId),
+                ),
+            )
+
+        checkIfOwnerOfVideo(video, authHeader)
 
         fileRepository.save(video, uploadVideo.videoFile)
 
@@ -44,9 +56,26 @@ class VideoService (
         return FileSystemResource(file)
     }
 
-    fun deleteVideo(id: Int) {
+    fun deleteVideo(
+        id: Int,
+        authHeader: String,
+    ) {
         val video = repository.findById(id).get()
+
+        checkIfOwnerOfVideo(video, authHeader)
+
         fileRepository.delete(video)
         repository.deleteById(id)
+    }
+
+    fun checkIfOwnerOfVideo(
+        video: Video,
+        authHeader: String,
+    ) {
+        val videoOwner = video.creator.username
+        val requestUser = jwtUtil.getUsernameFromToken(authHeader)
+        if (videoOwner != requestUser) {
+            throw MissingPermissionException("$requestUser has no permission to edit $videoOwner's videos")
+        }
     }
 }

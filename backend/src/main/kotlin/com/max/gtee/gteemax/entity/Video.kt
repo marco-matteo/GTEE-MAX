@@ -16,15 +16,17 @@ data class Video(
     var id: Int? = null,
     val views: Int = 0,
     val caption: String?,
-//    @OneToOne
-    val creator: Int,
+    @OneToOne
+    val creator: User,
 ) {
     val path: Path
-            get() = Paths.get(creator.toString(), "${id}.mp4")
-    fun toDto(): VideoDto = VideoDto(
-        id = id!!,
-        caption = caption,
-        views = views,
-        creatorId = creator
-    )
+        get() = Paths.get(creator.username, "$id.mp4")
+
+    fun toDto(): VideoDto =
+        VideoDto(
+            id = id!!,
+            caption = caption,
+            views = views,
+            creatorId = creator.username,
+        )
 }
