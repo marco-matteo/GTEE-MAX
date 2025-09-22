@@ -11,8 +11,5 @@ spring:
     properties:
       hibernate.format_sql: true
 gtee:
-  video-dir: video
-debug: true
-logging:
-  level:
-    web: trace
+  video:
+    dir: video
