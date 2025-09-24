@@ -1,25 +1,35 @@
-import ScrollButton from "./components/buttons/ScrollButton.tsx";
-import Profile from "./components/Profile/Profile.tsx";
-import emptyProfile from "./assets/empty_profile.png";
+import VideoScreen from "./components/VideoScreen.tsx";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import LoginBox from "./components/auth/LoginBox.tsx";
 
 export default function App() {
-  return (
-    <div className="min-h-screen w-full flex justify-center items-center bg-black opacity-75">
-      <div className="flex flex-col gap-4 items-center">
-        <div className="relative h-screen aspect-[9/16] bg-white rounded-xl shadow-lg flex flex-col justify-center items-center">
-          <div className="absolute bottom-4 left-4">
-            <Profile name="Peter Meier" imageSrc={emptyProfile} />
-          </div>
-          <ScrollButton
-            isUp={true}
-            className="h-16 w-16 absolute -right-20 mb-20"
-          />
-          <ScrollButton
-            isUp={false}
-            className="h-16 w-16 absolute -right-20 mt-20"
-          />
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/auth", {withCredentials: true})
+            .then(() => setIsAuthenticated(true))
+            .catch(() => setIsAuthenticated(false));
+    }, [])
+
+    if (isAuthenticated === null) {
+        return <div className="text-white">Loading...</div>
+    }
+
+    return (
+        <div className="min-h-screen w-full flex justify-center items-center bg-[#444444]">
+            <div className="flex flex-col gap-4 items-center">
+                {
+                    isAuthenticated ? (
+                        <div
+                            className="relative h-screen aspect-[9/16] bg-white rounded-xl shadow-lg flex flex-col justify-center items-center">
+                            <VideoScreen/>
+                        </div>
+                    ) : (
+                        <LoginBox onLoginSuccess={() => setIsAuthenticated(true)} />
+                    )
+                }
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

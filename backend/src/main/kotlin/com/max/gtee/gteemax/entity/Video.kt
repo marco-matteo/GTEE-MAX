@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToOne
+import jakarta.persistence.ManyToOne
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -16,7 +16,7 @@ data class Video(
     var id: Int? = null,
     val views: Int = 0,
     val caption: String?,
-    @OneToOne
+    @ManyToOne
     val creator: User,
 ) {
     val path: Path

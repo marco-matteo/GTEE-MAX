@@ -25,7 +25,7 @@ class VideoService(
 
     fun uploadVideo(
         uploadVideo: UploadVideoDto,
-        authHeader: String,
+        token: String,
     ): VideoDto {
         val video =
             repository.save(
@@ -35,7 +35,7 @@ class VideoService(
                 ),
             )
 
-        checkIfOwnerOfVideo(video, authHeader)
+        checkIfOwnerOfVideo(video, token)
 
         fileRepository.save(video, uploadVideo.videoFile)
 
@@ -58,11 +58,11 @@ class VideoService(
 
     fun deleteVideo(
         id: Int,
-        authHeader: String,
+        token: String,
     ) {
         val video = repository.findById(id).get()
 
-        checkIfOwnerOfVideo(video, authHeader)
+        checkIfOwnerOfVideo(video, token)
 
         fileRepository.delete(video)
         repository.deleteById(id)
@@ -70,10 +70,10 @@ class VideoService(
 
     fun checkIfOwnerOfVideo(
         video: Video,
-        authHeader: String,
+        token: String,
     ) {
         val videoOwner = video.creator.username
-        val requestUser = jwtUtil.getUsernameFromToken(authHeader)
+        val requestUser = jwtUtil.getUsernameFromToken(token)
         if (videoOwner != requestUser) {
             throw MissingPermissionException("$requestUser has no permission to edit $videoOwner's videos")
         }

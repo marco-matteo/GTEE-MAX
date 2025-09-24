@@ -20,10 +20,9 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val authHeader = request.getHeader("Authorization")
+        val token = request.cookies?.firstOrNull { it.name == "jwt" }?.value
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            val token = authHeader.removePrefix("Bearer ")
+        if (token != null) {
             val username = jwtUtil.getUsernameFromToken(token)
 
             if (SecurityContextHolder.getContext().authentication == null) {
