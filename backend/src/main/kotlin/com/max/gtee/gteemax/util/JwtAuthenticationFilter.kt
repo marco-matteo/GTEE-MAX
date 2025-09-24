@@ -1,6 +1,5 @@
 package com.max.gtee.gteemax.util
 
-import com.max.gtee.gteemax.config.JwtUtil
 import com.max.gtee.gteemax.service.CustomUserDetailsService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -21,10 +20,9 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val authHeader = request.getHeader("Authorization")
+        val token = request.cookies?.firstOrNull { it.name == "jwt" }?.value
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            val token = authHeader.removePrefix("Bearer ")
+        if (token != null) {
             val username = jwtUtil.getUsernameFromToken(token)
 
             if (SecurityContextHolder.getContext().authentication == null) {
