@@ -15,7 +15,7 @@ data class Video(
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Int? = null,
     val views: Int = 0,
-    val caption: String?,
+    val caption: String,
     @ManyToOne
     val creator: User,
 ) {

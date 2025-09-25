@@ -34,7 +34,7 @@ class VideoController(
     )
     fun uploadVideo(
         @ModelAttribute video: UploadVideoDto,
-        @CookieValue(name = "jwt", required = false) token: String,
+        @CookieValue(name = "jwt", required = true) token: String,
     ): VideoDto = service.uploadVideo(video, token)
 
     @GetMapping("/stream/{id}")
@@ -60,6 +60,6 @@ class VideoController(
     @DeleteMapping("/{id}")
     fun deleteVideo(
         @PathVariable id: Int,
-        @CookieValue(name = "jwt", required = false) token: String,
+        @CookieValue(name = "jwt", required = true) token: String,
     ) = service.deleteVideo(id, token)
 }

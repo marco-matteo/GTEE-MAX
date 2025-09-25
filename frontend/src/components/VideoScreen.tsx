@@ -7,6 +7,7 @@ import axios from "axios";
 export default function VideoScreen() {
     const [videoId, setVideoId] = useState<number | null>(null);
     const [user, setUser] = useState<string>("")
+    const [caption, setCaption] = useState("")
 
     const fetchNextVideo = async () => {
         try {
@@ -15,6 +16,7 @@ export default function VideoScreen() {
             })
             setVideoId(res.data.id);
             setUser(res.data.creatorId)
+            setCaption(res.data.caption)
         } catch (err) {
             console.error("Failed to fetch video:", err);
         }
@@ -25,9 +27,7 @@ export default function VideoScreen() {
             {
                 videoId ? (
                     <>
-                        <div className="absolute bottom-4 left-4">
-                            <Profile name={user} imageSrc={emptyProfile}/>
-                        </div>
+                        <Profile name={user} caption={caption} imageSrc={emptyProfile}/>
                         <video
                             key={videoId}
                             autoPlay
