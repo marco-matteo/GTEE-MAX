@@ -2,11 +2,13 @@ package com.max.gtee.gteemax.repository
 
 import com.max.gtee.gteemax.config.GteeConfig
 import com.max.gtee.gteemax.entity.Video
+import com.max.gtee.gteemax.exception.GteeException
+import com.max.gtee.gteemax.exception.InvalidVideoException
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.mock.web.MockMultipartFile
@@ -16,8 +18,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.Path
-import kotlin.io.path.absolute
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -33,7 +35,7 @@ class FileRepositoryTest() {
 
     @BeforeAll
     fun setup() {
-        configMock = mock(GteeConfig::class.java)
+        configMock = mock()
         `when`(configMock.dir).thenReturn(testDir)
         videoMock = mock()
         `when`(videoMock.path).thenReturn(Paths.get("test-user", "video.mp4"))
@@ -47,7 +49,7 @@ class FileRepositoryTest() {
     fun cleanup() {
         Files.walk(Path( testDir))
             .sorted(Comparator.reverseOrder())   // delete children first
-            .forEach(Files::delete)
+            .forEach(Files::deleteIfExists)
     }
 
     @Test
@@ -60,12 +62,44 @@ class FileRepositoryTest() {
     }
 
     @Test
+    fun `Throws when file is empty`() {
+        val emptyFile = MockMultipartFile("empty.mp4", null)
+
+        assertThrows<InvalidVideoException> { repository.save(videoMock, emptyFile)}
+    }
+
+    @Test
     fun `Saved File ist found correctly`() {
         repository.save(videoMock, fileMock)
 
         val expected = File(expectedPath.toUri())
-        val actual = repository.find(videoMock.path.absolute())
+        val actual = repository.find(videoMock.path).absoluteFile
 
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Throws if file is not found`() {
+        assertThrows<GteeException> {
+            repository.find(Path("invalid"))
+        }
+
+    }
+
+    @Test
+    fun `Deletes videos correctly`() {
+        repository.save(videoMock, fileMock)
+
+        repository.delete(videoMock)
+
+        assertFalse { File(expectedPath.toUri()).exists() }
+    }
+
+    @Test
+    fun `Throws when video trying to be deleted does not exist`() {
+        val invalidVideo: Video = mock()
+        `when`(invalidVideo.path).thenReturn(Paths.get("invalid"))
+
+        assertThrows<GteeException> { repository.delete(invalidVideo) }
     }
 }

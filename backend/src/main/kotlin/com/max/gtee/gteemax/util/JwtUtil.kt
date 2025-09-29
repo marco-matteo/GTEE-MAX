@@ -12,12 +12,12 @@ import java.util.Date
 const val EXPIRATION = 1000 * 60 * 60
 
 @Component
-final class JwtUtil {
+final class JwtUtil(val expiration: Int = EXPIRATION) {
     private val secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
 
     fun generateToken(username: String): String {
         val now = Date()
-        val expiryDate = Date(now.time + EXPIRATION)
+        val expiryDate = Date(now.time + expiration)
 
         return Jwts
             .builder()
