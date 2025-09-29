@@ -69,7 +69,7 @@ class FileRepositoryTest {
     }
 
     @Test
-    fun `Saved File ist found correctly`() {
+    fun `Saved File is found correctly`() {
         repository.save(videoMock, fileMock)
 
         val expected = File(expectedPath.toUri())
