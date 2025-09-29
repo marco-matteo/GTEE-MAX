@@ -1,9 +1,12 @@
 package com.max.gtee.gteemax.controller
 
+import com.max.gtee.gteemax.service.AuthService
 import com.max.gtee.gteemax.util.JwtUtil
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CookieValue
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class AuthController(
     private val jwtUtil: JwtUtil,
+    private val authService: AuthService,
 ) {
     @GetMapping
     fun checkAuth(
@@ -21,4 +25,16 @@ class AuthController(
     fun getCurrentUser(
         @CookieValue(name = "jwt", required = true) token: String,
     ): ResponseEntity<String> = ResponseEntity.ok(jwtUtil.getUsernameFromToken(token))
+
+    @GetMapping("/user/check/{username}")
+    fun checkUserExists(
+        @PathVariable username: String,
+    ): ResponseEntity<String> {
+        val userExists = authService.checkUserExists(username)
+        return if (userExists) {
+            ResponseEntity.ok("User exists")
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found")
+        }
+    }
 }
