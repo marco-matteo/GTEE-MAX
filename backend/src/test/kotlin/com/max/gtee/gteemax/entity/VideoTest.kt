@@ -2,7 +2,7 @@ package com.max.gtee.gteemax.entity
 
 import com.max.gtee.gteemax.dto.VideoDto
 import com.max.gtee.gteemax.exception.GteeException
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -13,7 +13,7 @@ import java.nio.file.Paths
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VideoTest {
-    lateinit var userMock: User
+    private lateinit var userMock: User
 
     @BeforeAll
     fun setup() {
@@ -49,5 +49,4 @@ class VideoTest {
 
         assertEquals(expected, actual)
     }
-
 }

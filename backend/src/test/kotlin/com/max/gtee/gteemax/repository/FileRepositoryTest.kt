@@ -23,15 +23,15 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class FileRepositoryTest() {
-    val testDir: String = "_test-video"
+class FileRepositoryTest {
+    private val testDir: String = "_test-video"
 
-    lateinit var configMock: GteeConfig
-    lateinit var repository: FileRepository
-    lateinit var videoMock: Video
-    lateinit var expectedPath: Path
-    lateinit var fileMock: MultipartFile
-    lateinit var expectedText: String
+    private lateinit var configMock: GteeConfig
+    private lateinit var repository: FileRepository
+    private lateinit var videoMock: Video
+    private lateinit var expectedPath: Path
+    private lateinit var fileMock: MultipartFile
+    private lateinit var expectedText: String
 
     @BeforeAll
     fun setup() {
@@ -47,8 +47,8 @@ class FileRepositoryTest() {
 
     @AfterAll
     fun cleanup() {
-        Files.walk(Path( testDir))
-            .sorted(Comparator.reverseOrder())   // delete children first
+        Files.walk(Path(testDir))
+            .sorted(Comparator.reverseOrder()) // delete children first
             .forEach(Files::deleteIfExists)
     }
 
@@ -65,7 +65,7 @@ class FileRepositoryTest() {
     fun `Throws when file is empty`() {
         val emptyFile = MockMultipartFile("empty.mp4", null)
 
-        assertThrows<InvalidVideoException> { repository.save(videoMock, emptyFile)}
+        assertThrows<InvalidVideoException> { repository.save(videoMock, emptyFile) }
     }
 
     @Test
@@ -83,7 +83,6 @@ class FileRepositoryTest() {
         assertThrows<GteeException> {
             repository.find(Path("invalid"))
         }
-
     }
 
     @Test

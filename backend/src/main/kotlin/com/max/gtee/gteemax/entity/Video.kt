@@ -25,7 +25,7 @@ data class Video(
             if (id == null) {
                 throw GteeException(
                     "Cannot generate video path because the videos id is null",
-                    NullPointerException("id is null")
+                    NullPointerException("id is null"),
                 )
             }
             return Paths.get(creator.username, "$id.mp4")

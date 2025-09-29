@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.io.FileNotFoundException
-import java.nio.file.NoSuchFileException
 import java.nio.file.Files
+import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -33,7 +33,7 @@ class FileRepository(
 
     fun find(path: Path): File {
         val fullPath = videoDir.resolve(path)
-        val file =  fullPath.toFile()
+        val file = fullPath.toFile()
         if (!file.exists()) {
             throw GteeException(c = FileNotFoundException("File not found: $fullPath"))
         }

@@ -14,9 +14,9 @@ import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JwtUtilTest {
-    lateinit var jwtUtil: JwtUtil
-    lateinit var jwtUtilExpired: JwtUtil
-    val username: String = "testuser"
+    private lateinit var jwtUtil: JwtUtil
+    private lateinit var jwtUtilExpired: JwtUtil
+    private val username: String = "testuser"
 
     @BeforeAll
     fun setup() {
@@ -31,10 +31,11 @@ class JwtUtilTest {
 
         assertTrue { actualEncoded.size == 3 }
 
-        val actual = actualEncoded.dropLast(1)
-            .map {
-                Base64.UrlSafe.decode(it).decodeToString()
-            }
+        val actual =
+            actualEncoded.dropLast(1)
+                .map {
+                    Base64.UrlSafe.decode(it).decodeToString()
+                }
 
         val expectedAlg = """{"alg":"HS256"}"""
 

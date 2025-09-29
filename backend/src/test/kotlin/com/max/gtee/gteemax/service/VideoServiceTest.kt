@@ -25,16 +25,15 @@ import java.util.Optional
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VideoServiceTest {
-    lateinit var videoService: VideoService
-    lateinit var videoRepository: VideoRepository
-    lateinit var fileRepository: FileRepository
-    lateinit var gteeConfig: GteeConfig
-    lateinit var userService: UserService
-    lateinit var jwtUtil: JwtUtil
-    lateinit var uploadVideo: UploadVideoDto
+    private lateinit var videoService: VideoService
+    private lateinit var videoRepository: VideoRepository
+    private lateinit var fileRepository: FileRepository
+    private lateinit var gteeConfig: GteeConfig
+    private lateinit var userService: UserService
+    private lateinit var jwtUtil: JwtUtil
+    private lateinit var uploadVideo: UploadVideoDto
 
-    val userName = "testuser"
-
+    private val userName = "testuser"
 
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 
@@ -50,18 +49,20 @@ class VideoServiceTest {
         userService = mock()
         `when`(userService.getUser("testuser")).thenReturn(testUser)
         jwtUtil = JwtUtil()
-        videoService = VideoService(
-            videoRepository,
-            fileRepository,
-            gteeConfig,
-            userService,
-            jwtUtil
-        )
-        uploadVideo = UploadVideoDto(
-            "testuser",
-            "test",
-            MockMultipartFile("testfile.mp4", "testcontent".toByteArray())
-        )
+        videoService =
+            VideoService(
+                videoRepository,
+                fileRepository,
+                gteeConfig,
+                userService,
+                jwtUtil,
+            )
+        uploadVideo =
+            UploadVideoDto(
+                "testuser",
+                "test",
+                MockMultipartFile("testfile.mp4", "testcontent".toByteArray()),
+            )
     }
 
     @Test
@@ -70,7 +71,6 @@ class VideoServiceTest {
         videoService.uploadVideo(uploadVideo, token)
         verify(fileRepository).save(any(Video::class.java), any(MultipartFile::class.java))
         verify(videoRepository, times(2)).save(any(Video::class.java))
-
     }
 
     @Test
