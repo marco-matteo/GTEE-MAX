@@ -12,3 +12,7 @@ spring:
   h2:
     console:
       enabled: true
+gtee:
+  video:
+    dir: test-video
+    seed: 21
