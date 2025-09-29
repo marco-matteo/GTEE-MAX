@@ -1,7 +1,7 @@
 import axios from "axios";
 import {useState} from "react";
 
-export default function LoginBox( {onLoginSuccess }: {onLoginSuccess: () => void}) {
+export default function LoginBox( {onLoginSuccess, onRegisterClick}: {onLoginSuccess: () => void, onRegisterClick: () => void}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,23 +16,29 @@ export default function LoginBox( {onLoginSuccess }: {onLoginSuccess: () => void
     }
 
     return (
-        <div className="p-6 bg-gray-100 rounded-lg shadow-md w-64 flex flex-col gap-3">
+        <div className="flex flex-col gap-5 bg-white px-24 py-8 rounded-2xl">
+            <h1 className="text-3xl mx-auto font-bold">Login</h1>
             <input
                 type="text"
                 placeholder="Username"
-                className="border p-2 rounded"
+                className="border p-5 text-lg rounded-xl"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required
             />
             <input
                 type="password"
                 placeholder="Password"
-                className="border p-2 rounded"
+                className="border p-5 text-lg rounded-xl"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
             />
-            <button className="bg-blue-500 text-white p-2 rounded" onClick={handleLogin}>
+            <button className="py-2 rounded-xl bg-purple-500 text-xl font-bold text-white" onClick={handleLogin}>
                 Login
+            </button>
+            <button className="py-2 rounded-xl bg-gray-300 text-xl font-semibold" onClick={onRegisterClick}>
+                Register
             </button>
         </div>
     )

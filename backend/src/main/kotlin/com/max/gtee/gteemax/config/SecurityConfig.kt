@@ -30,6 +30,7 @@ class SecurityConfig(
                     .requestMatchers(
                         "/user/login",
                         "/user/register",
+                        "/auth/user/check/*",
                     ).permitAll()
                 it.anyRequest().authenticated()
             }.userDetailsService(userDetailsService)
