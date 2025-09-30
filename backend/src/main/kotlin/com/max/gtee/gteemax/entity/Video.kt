@@ -1,6 +1,7 @@
 package com.max.gtee.gteemax.entity
 
 import com.max.gtee.gteemax.dto.VideoDto
+import com.max.gtee.gteemax.exception.GteeException
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -20,7 +21,15 @@ data class Video(
     val creator: User,
 ) {
     val path: Path
-        get() = Paths.get(creator.username, "$id.mp4")
+        get() {
+            if (id == null) {
+                throw GteeException(
+                    "Cannot generate video path because the videos id is null",
+                    NullPointerException("id is null"),
+                )
+            }
+            return Paths.get(creator.username, "$id.mp4")
+        }
 
     fun toDto(): VideoDto =
         VideoDto(

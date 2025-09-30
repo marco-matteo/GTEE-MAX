@@ -19,4 +19,12 @@
     <Match>
         <Bug pattern="EI_EXPOSE_REP2" />
     </Match>
+
+    <Match>
+        <Bug pattern="NM_METHOD_NAMING_CONVENTION" />
+    </Match>
+
+    <Match>
+        <Class name="~.*Test" />
+    </Match>
 </FindBugsFilter>
