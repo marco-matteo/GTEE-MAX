@@ -15,6 +15,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoInteractions
@@ -95,7 +96,7 @@ class VideoServiceTest {
         val token = jwtUtil.generateToken("other user")
         assertThrows<MissingPermissionException> { videoService.deleteVideo(1, token) }
         verifyNoInteractions(fileRepository)
-        verify(videoRepository, times(0)).deleteById(1)
+        verify(videoRepository, never()).deleteById(1)
     }
 
     @Test
