@@ -46,7 +46,7 @@ jobs:
           node-version: 20
 
       - name: Install
-        run: npm i
+        run: npm ci
 
       - name: Lint
         run: npm run lint
