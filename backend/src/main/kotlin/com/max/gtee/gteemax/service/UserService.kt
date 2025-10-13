@@ -39,4 +39,9 @@ class UserService(
 
         return repository.save(newUser)
     }
+
+    fun cleanup() {
+        val testUser = repository.findById("D5h6q758eViTo3LRPT0G").get()
+        repository.delete(testUser)
+    }
 }

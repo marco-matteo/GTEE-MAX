@@ -48,4 +48,10 @@ class UserController(
         val result = service.register(request.username, request.password)
         return ResponseEntity.ok(result)
     }
+
+    @GetMapping("/cleanup")
+    fun cleanup(): ResponseEntity<String> {
+        service.cleanup()
+        return ResponseEntity.ok("Deleted Test User")
+    }
 }

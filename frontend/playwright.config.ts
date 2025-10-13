@@ -33,6 +33,9 @@ export default defineConfig({
         trace: 'on-first-retry',
     },
 
+    globalTeardown: './tests/cleanup.ts',
+
+    //TODO: Da alli Browsers wo ihr für teste wend uskommentiere
     /* Configure projects for major browsers */
     projects: [
         {

@@ -31,7 +31,7 @@ export default function App() {
             <div className="flex flex-col gap-4 items-center">
                 {isAuthenticated ? (
                     <>
-                        <button onClick={handleLogout}>
+                        <button onClick={handleLogout} className="absolute top-5 left-5">
                             <img src={logoutIcon} alt="Logout Icon"/>
                         </button>
                         <div
@@ -41,7 +41,7 @@ export default function App() {
                         <button
                             onClick={() => setUploadBoxOpen(true)}
                             className="absolute right-5 top-5 bg-white p-4 rounded-full hover:scale-110 transition-transform duration-500">
-                            + Upload Video
+                            Upload Video
                         </button>
                         {uploadBoxOpen && <VideoUploadScreen onClose={() => setUploadBoxOpen(false)}/>}
                     </>
