@@ -40,8 +40,11 @@ class UserService(
         return repository.save(newUser)
     }
 
-    fun cleanup() {
-        val testUser = repository.findById("D5h6q758eViTo3LRPT0G").get()
-        repository.delete(testUser)
+    fun cleanup(token: String) {
+        val username = jwtUtil.getUsernameFromToken(token)
+        if (username == "D5h6q758eViTo3LRPT0G") {
+            val testUser = repository.findById("D5h6q758eViTo3LRPT0G").get()
+            repository.delete(testUser)
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.max.gtee.gteemax.service.UserService
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CookieValue
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -50,8 +51,10 @@ class UserController(
     }
 
     @GetMapping("/cleanup")
-    fun cleanup(): ResponseEntity<String> {
-        service.cleanup()
+    fun cleanup(
+        @CookieValue("jwt", required = true) token: String,
+    ): ResponseEntity<String> {
+        service.cleanup(token)
         return ResponseEntity.ok("Deleted Test User")
     }
 }

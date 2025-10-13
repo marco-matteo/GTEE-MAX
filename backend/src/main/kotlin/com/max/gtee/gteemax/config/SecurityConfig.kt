@@ -31,7 +31,7 @@ class SecurityConfig(
                         "/user/login",
                         "/user/register",
                         "/auth/user/check/*",
-                        "user/cleanup",
+                        "/user/cleanup",
                     ).permitAll()
                 it.anyRequest().authenticated()
             }.userDetailsService(userDetailsService)
