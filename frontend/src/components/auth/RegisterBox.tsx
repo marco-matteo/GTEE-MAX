@@ -46,6 +46,7 @@ export default function RegisterBox({onRegisterSuccess, onCancelClick}: {
                 type="text"
                 placeholder="Username"
                 className="border p-5 text-lg rounded-xl"
+                maxLength={20}
                 value={username}
                 onChange={(e) => {
                     setUsername(e.target.value)
