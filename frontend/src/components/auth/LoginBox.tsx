@@ -1,7 +1,10 @@
 import axios from "axios";
 import {useState} from "react";
 
-export default function LoginBox( {onLoginSuccess, onRegisterClick}: {onLoginSuccess: () => void, onRegisterClick: () => void}) {
+export default function LoginBox({onLoginSuccess, onRegisterClick}: {
+    onLoginSuccess: () => void,
+    onRegisterClick: () => void
+}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,30 +19,32 @@ export default function LoginBox( {onLoginSuccess, onRegisterClick}: {onLoginSuc
     }
 
     return (
-        <div className="flex flex-col gap-5 bg-white px-24 py-8 rounded-2xl">
-            <h1 className="text-3xl mx-auto font-bold">Login</h1>
-            <input
-                type="text"
-                placeholder="Username"
-                className="border p-5 text-lg rounded-xl"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                className="border p-5 text-lg rounded-xl"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <button className="py-2 rounded-xl bg-purple-500 text-xl font-bold text-white" onClick={handleLogin}>
-                Login
-            </button>
-            <button className="py-2 rounded-xl bg-gray-300 text-xl font-semibold" onClick={onRegisterClick}>
-                Register
-            </button>
+        <div className="h-screen w-full bg-black flex flex-col justify-center">
+            <div className="h-1/2 w-1/3 mx-auto flex flex-col justify-center gap-5 bg-white px-24 py-8 rounded-2xl">
+                <h1 className="text-3xl mx-auto font-bold">Login</h1>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    className="border p-5 text-lg rounded-xl"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    className="border p-5 text-lg rounded-xl"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <button className="py-2 rounded-xl bg-purple-500 text-xl font-bold text-white" onClick={handleLogin}>
+                    Login
+                </button>
+                <button className="py-2 rounded-xl bg-gray-300 text-xl font-semibold" onClick={onRegisterClick}>
+                    Register
+                </button>
+            </div>
         </div>
     )
 }
