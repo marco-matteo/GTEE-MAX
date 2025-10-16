@@ -62,4 +62,15 @@ class VideoController(
         @PathVariable id: Int,
         @CookieValue(name = "jwt", required = true) token: String,
     ) = service.deleteVideo(id, token)
+
+    @PostMapping("/favorite/{id}")
+    fun favoriteVideo(
+        @PathVariable id: Int,
+        @CookieValue(name = "jwt", required = true) token: String,
+    ) = service.favoriteVideo(id, token)
+
+    @DeleteMapping("/favorite")
+    fun unfavoriteVideo(
+        @CookieValue(name = "jwt", required = true) token: String,
+    ) = service.unfavoriteVideo(token)
 }
