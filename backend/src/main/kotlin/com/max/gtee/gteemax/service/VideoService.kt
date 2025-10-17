@@ -92,6 +92,15 @@ class VideoService(
         userRepository.save(user.copy(favorite = video))
     }
 
+    fun isFavorite(
+        id: Int,
+        token: String,
+    ): Boolean {
+        val username = jwtUtil.getUsernameFromToken(token)
+        val user = userService.getUser(username)
+        return user.favorite?.id == id
+    }
+
     fun unfavoriteVideo(token: String) {
         val username = jwtUtil.getUsernameFromToken(token)
         val user = userService.getUser(username)

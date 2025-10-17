@@ -73,4 +73,10 @@ class VideoController(
     fun unfavoriteVideo(
         @CookieValue(name = "jwt", required = true) token: String,
     ) = service.unfavoriteVideo(token)
+
+    @GetMapping("/favorite/{id}")
+    fun isFavorite(
+        @PathVariable id: Int,
+        @CookieValue(name = "jwt", required = true) token: String,
+    ) = service.isFavorite(id, token)
 }

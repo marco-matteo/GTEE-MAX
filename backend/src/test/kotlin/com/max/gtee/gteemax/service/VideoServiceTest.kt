@@ -209,5 +209,25 @@ class VideoServiceTest {
         fun `Does not throw when user does not have a favorite video`() {
             assertDoesNotThrow { subject.unfavoriteVideo(token) }
         }
+
+        @Test
+        fun `Current video should not be favorite when favorite is unset`() {
+            val actual = subject.isFavorite(video.id, token)
+            assertEquals(false, actual)
+        }
+
+        @Test
+        fun `Video marked as favorite should be favorite`() {
+            subject.favoriteVideo(video.id, token)
+            val actual = subject.isFavorite(video.id, token)
+            assertEquals(true, actual)
+        }
+
+        @Test
+        fun `Current Video should not be favorite if other video is favorite`() {
+            subject.favoriteVideo(video2.id, token)
+            val actual = subject.isFavorite(video.id, token)
+            assertEquals(false, actual)
+        }
     }
 }
