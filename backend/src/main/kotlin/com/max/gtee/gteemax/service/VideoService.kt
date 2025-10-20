@@ -5,18 +5,22 @@ import com.max.gtee.gteemax.dto.UploadVideoDto
 import com.max.gtee.gteemax.dto.VideoDto
 import com.max.gtee.gteemax.entity.Video
 import com.max.gtee.gteemax.exception.MissingPermissionException
+import com.max.gtee.gteemax.exception.VideoNotFoundException
 import com.max.gtee.gteemax.repository.FileRepository
+import com.max.gtee.gteemax.repository.UserRepository
 import com.max.gtee.gteemax.repository.VideoRepository
 import com.max.gtee.gteemax.util.JwtUtil
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrElse
 import kotlin.random.Random
 
 @Service
 class VideoService(
     private val repository: VideoRepository,
     private val fileRepository: FileRepository,
+    private val userRepository: UserRepository,
     private val config: GteeConfig,
     private val userService: UserService,
     private val jwtUtil: JwtUtil,
@@ -76,5 +80,30 @@ class VideoService(
         if (videoOwnerId != requestUser) {
             throw MissingPermissionException("$requestUser has no permission to edit $videoOwnerId's videos")
         }
+    }
+
+    fun favoriteVideo(
+        id: Int,
+        token: String,
+    ) {
+        val username = jwtUtil.getUsernameFromToken(token)
+        val user = userService.getUser(username)
+        val video = repository.findById(id).getOrElse { throw VideoNotFoundException("Video not found") }
+        userRepository.save(user.copy(favorite = video))
+    }
+
+    fun isFavorite(
+        id: Int,
+        token: String,
+    ): Boolean {
+        val username = jwtUtil.getUsernameFromToken(token)
+        val user = userService.getUser(username)
+        return user.favorite?.id == id
+    }
+
+    fun unfavoriteVideo(token: String) {
+        val username = jwtUtil.getUsernameFromToken(token)
+        val user = userService.getUser(username)
+        userRepository.save(user.copy(favorite = null))
     }
 }
