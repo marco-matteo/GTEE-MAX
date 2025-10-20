@@ -6,14 +6,16 @@ import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
 import Home from "./components/Home.tsx";
 import ProfileScreen from "./components/ProfileScreen.tsx";
 import NotFound from "./components/NotFound.tsx";
+import axios from "axios";
+import VideoScreen from "./components/VideoScreen.tsx";
 
 export default function App() {
     const navigate = useNavigate();
     const [uploadBoxOpen, setUploadBoxOpen] = useState(false);
 
     const handleLogout = () => {
-        navigate("/login")
-        document.cookie = "jwt="
+        axios.delete("http://localhost:8080/user/logout", {withCredentials: true})
+            .then(() => navigate("/login"))
     }
 
     return (
@@ -22,6 +24,16 @@ export default function App() {
                 <ProtectedRoute>
                     <Home uploadBoxOpen={uploadBoxOpen} setUploadBoxOpen={setUploadBoxOpen}
                           handleLogout={handleLogout}/>
+                </ProtectedRoute>
+            }/>
+            <Route path="/video" element={
+                <ProtectedRoute>
+                    <VideoScreen />
+                </ProtectedRoute>
+            } />
+            <Route path="/video/:videoId" element={
+                <ProtectedRoute>
+                    <VideoScreen />
                 </ProtectedRoute>
             }/>
             <Route path="/profile/:username" element={

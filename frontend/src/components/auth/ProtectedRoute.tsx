@@ -14,7 +14,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
             .finally(() => setIsLoading(false))
     }, [navigate])
 
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return <div className="h-screen w-full bg-black"></div>
 
     return isAuthenticated ? children : null
 }

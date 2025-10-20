@@ -57,6 +57,14 @@ class VideoController(
     @GetMapping("/next")
     fun getNextVideo(): VideoDto = service.getNextVideo()
 
+    @GetMapping("/user/{username}")
+    fun getVideosForUser(
+        @PathVariable username: String,
+    ): ResponseEntity<List<VideoDto>> {
+        val videos = service.getVideosForUser(username)
+        return ResponseEntity.ok(videos)
+    }
+
     @DeleteMapping("/{id}")
     fun deleteVideo(
         @PathVariable id: Int,
