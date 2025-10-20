@@ -8,7 +8,6 @@ import kotlin.test.assertEquals
 
 @SpringBootTest
 class UserTest {
-
     @Autowired
     lateinit var userService: UserService
 
