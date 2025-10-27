@@ -31,7 +31,7 @@ jobs:
 
       - name: Install gh-code-scanning extension
         if: always()
-        run: gh extension install github/gh-code-scanning
+        run: gh extension install advanced-security/gh-code-scanning
         env:
           GH_TOKEN: ${{ github.token }}
 
