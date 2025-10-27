@@ -29,6 +29,10 @@ jobs:
       - name: Check
         run: ./gradlew check
 
+      - name: Install gh-code-scanning extension
+        if: always()
+        run: gh extension install github/gh-code-scanning
+
       - name: Publish JUnit test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -36,13 +40,8 @@ jobs:
           name: junit-results
           path: backend/build/test-results/test/*.xml
 
-      - name: Report SpotBugs issues
-        if: always()
-        uses: jwgmeligmeyling/spotbugs-github-action@master
-        with:
-          path: 'backend/build/reports/spotbugs/*.xml'
-
       - name: Upload spotbugs SARIF
+        if: always()
         run: |
           for f in build/reports/spotbugs/*.sarif; do
             echo "Uploading $f"
@@ -50,6 +49,7 @@ jobs:
           done
 
       - name: Upload detekt SARIF
+        if: always()
         run: |
           for f in build/reports/detekt/*.sarif; do
             echo "Uploading $f"
@@ -57,6 +57,7 @@ jobs:
           done
 
       - name: Upload ktlint SARIF
+        if: always()
         run: |
           for f in build/reports/ktlint/**/*.sarif; do
             echo "Uploading $f"
