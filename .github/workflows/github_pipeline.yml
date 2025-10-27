@@ -42,19 +42,20 @@ jobs:
         with:
           path: 'backend/build/reports/spotbugs/*.xml'
 
-      - name: Upload Detekt report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: detekt-report
-          path: backend/build/reports/detekt/*.xml
 
-      - name: Upload ktlint report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ktlint-report
-          path: backend/build/reports/ktlint/*.xml
+
+      - name: Upload detekt SARIF
+        run: |
+          for f in build/reports/detekt/*.sarif; do
+            echo "Uploading $f"
+            gh code-scanning upload --sarif="$f"
+
+      - name: Upload ktlint SARIF
+        run: |
+          for f in build/reports/ktlint/**/*.sarif; do
+            echo "Uploading $f"
+            gh code-scanning upload --sarif="$f"
+          done
 
   frontend:
     name: Frontend
