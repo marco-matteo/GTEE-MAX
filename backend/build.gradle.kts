@@ -30,6 +30,9 @@ tasks {
         reports.create("html") {
             required = true
         }
+        reports.create("sarif") {
+            required = true
+        }
     }
     withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         reports {

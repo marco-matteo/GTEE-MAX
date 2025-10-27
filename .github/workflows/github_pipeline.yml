@@ -42,13 +42,19 @@ jobs:
         with:
           path: 'backend/build/reports/spotbugs/*.xml'
 
-
+      - name: Upload spotbugs SARIF
+        run: |
+          for f in build/reports/spotbugs/*.sarif; do
+            echo "Uploading $f"
+            gh code-scanning upload --sarif="$f"
+          done
 
       - name: Upload detekt SARIF
         run: |
           for f in build/reports/detekt/*.sarif; do
             echo "Uploading $f"
             gh code-scanning upload --sarif="$f"
+          done
 
       - name: Upload ktlint SARIF
         run: |
