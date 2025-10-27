@@ -1,7 +1,7 @@
 type User = {
     username: string,
     views: number,
-    favorite_id: number,
+    favorite_id?: number,
 }
 
 type Video = {
