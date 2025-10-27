@@ -29,6 +29,33 @@ jobs:
       - name: Check
         run: ./gradlew check
 
+      - name: Publish JUnit test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: backend/build/test-results/test/*.xml
+
+      - name: Report SpotBugs issues
+        if: always()
+        uses: jwgmeligmeyling/spotbugs-github-action@master
+        with:
+          path: 'backend/build/reports/spotbugs/*.xml'
+
+      - name: Upload Detekt report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detekt-report
+          path: backend/build/reports/detekt/*.xml
+
+      - name: Upload ktlint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ktlint-report
+          path: backend/build/reports/ktlint/*.xml
+
   frontend:
     name: Frontend
     runs-on: ubuntu-latest
