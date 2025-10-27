@@ -32,6 +32,8 @@ jobs:
       - name: Install gh-code-scanning extension
         if: always()
         run: gh extension install github/gh-code-scanning
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Publish JUnit test results
         if: always()
@@ -47,6 +49,8 @@ jobs:
             echo "Uploading $f"
             gh code-scanning upload --sarif="$f"
           done
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Upload detekt SARIF
         if: always()
@@ -55,6 +59,8 @@ jobs:
             echo "Uploading $f"
             gh code-scanning upload --sarif="$f"
           done
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Upload ktlint SARIF
         if: always()
@@ -63,6 +69,8 @@ jobs:
             echo "Uploading $f"
             gh code-scanning upload --sarif="$f"
           done
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   frontend:
     name: Frontend
