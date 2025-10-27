@@ -6,6 +6,7 @@ import com.max.gtee.gteemax.service.UserService
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -39,6 +40,19 @@ class UserController(
 
         response.addCookie(cookie)
         return ResponseEntity.ok("Login successful")
+    }
+
+    @DeleteMapping("/logout")
+    fun logout(response: HttpServletResponse): ResponseEntity<String> {
+        val cookie =
+            Cookie("jwt", null).apply {
+                path = "/"
+                maxAge = 0
+                isHttpOnly = true
+                secure = false
+            }
+        response.addCookie(cookie)
+        return ResponseEntity.ok("Logged out")
     }
 
     @PostMapping("/register")

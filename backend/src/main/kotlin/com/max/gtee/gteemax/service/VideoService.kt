@@ -82,6 +82,12 @@ class VideoService(
         }
     }
 
+    fun getVideosForUser(username: String): List<VideoDto> =
+        repository
+            .findAllByCreatorUsername(username)
+            .map { it.toDto() }
+            .toList()
+
     fun favoriteVideo(
         id: Int,
         token: String,
