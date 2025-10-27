@@ -27,4 +27,8 @@
     <Match>
         <Class name="~.*Test" />
     </Match>
+
+    <Match>
+        <Bug pattern="BC_BAD_CAST_TO_ABSTRACT_COLLECTION" />
+    </Match>
 </FindBugsFilter>
