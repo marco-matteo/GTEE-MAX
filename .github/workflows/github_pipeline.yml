@@ -49,13 +49,13 @@ jobs:
           for sarif_file in $(find build/reports -name '*.sarif'); do
             echo "Uploading $sarif_file"
 
-            gz="$(mktemp --suffix=.gz)" gzip -c "$sarif_file" > "$gz"
+            gzip -c "$sarif_file" > "temp.gz"
             # base64 encode (no line wraps)
-            b64="$(mktemp)"
-            base64 --wrap=0 "$gz" > "$b64"
+
+            base64 --wrap=0 temp.gz > b64
 
             # read base64 into a variable safely
-            sarif_b64="$(cat "$b64")"
+            sarif_b64="$(cat b64)"
             gh api -X POST /repos/${{ github.repository }}/code-scanning/sarifs \
               -F sarif=$sarif_b64 \
               -F commit_sha="${{ github.sha }}" \
