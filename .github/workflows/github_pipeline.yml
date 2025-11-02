@@ -2,6 +2,10 @@
 on:
   push:
 
+permissions:
+  security-events: write
+  contents: read
+
 jobs:
   backend:
     name: Backend
