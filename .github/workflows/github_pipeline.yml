@@ -38,6 +38,7 @@ jobs:
       
       - name: Merge SARIF files
         run: |
+          find /build/reports -name '*.sarif'
           jq -s '{runs: map(.runs) | add}' $(find build/reports -name '*.sarif') > merged.sarif
 
       - name: Upload SARIF files
