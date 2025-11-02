@@ -42,10 +42,12 @@ jobs:
       - name: Upload SARIF files
         if: always()
         run: |
-          for sarif_file in build/reports/**/*.sarif; do
+          for sarif_file in $(find build/reports -name '*.sarif'); do
           echo "Uploading $sarif_file"
           gh api -X POST /repos/${{ github.repository }}/code-scanning/sarifs \
             -F sarif=@$sarif_file
+            -F commit_sha="${{ github.sha }}"
+            -F ref="${{ github.ref }}"
           done
 
   frontend:
