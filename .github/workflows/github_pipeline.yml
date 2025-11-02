@@ -35,12 +35,16 @@ jobs:
         with:
           name: junit-results
           path: backend/build/test-results/test/*.xml
+      
+      - name: Merge SARIF files
+        run: |
+          jq -s '{runs: map(.runs) | add}' $(find build/reports -name '*.sarif') > merged.sarif
 
       - name: Upload SARIF files
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: backend/build/reports
+          sarif_file: merged.sarif
 
   frontend:
     name: Frontend
