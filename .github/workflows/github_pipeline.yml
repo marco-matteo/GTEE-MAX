@@ -40,7 +40,7 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ./backend/build/reports/**/*.sarif
+          sarif_file: backend/build/reports
 
   frontend:
     name: Frontend
