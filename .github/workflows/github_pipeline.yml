@@ -29,12 +29,6 @@ jobs:
       - name: Check
         run: ./gradlew check
 
-      - name: Install gh-code-scanning extension
-        if: always()
-        run: gh extension install advanced-security/gh-code-scanning
-        env:
-          GH_TOKEN: ${{ github.token }}
-
       - name: Publish JUnit test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -42,35 +36,11 @@ jobs:
           name: junit-results
           path: backend/build/test-results/test/*.xml
 
-      - name: Upload spotbugs SARIF
+      - name: Upload SARIF files
         if: always()
-        run: |
-          for f in build/reports/spotbugs/*.sarif; do
-            echo "Uploading $f"
-            gh code-scanning upload --sarif="$f"
-          done
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-      - name: Upload detekt SARIF
-        if: always()
-        run: |
-          for f in build/reports/detekt/*.sarif; do
-            echo "Uploading $f"
-            gh code-scanning upload --sarif="$f"
-          done
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-      - name: Upload ktlint SARIF
-        if: always()
-        run: |
-          for f in build/reports/ktlint/**/*.sarif; do
-            echo "Uploading $f"
-            gh code-scanning upload --sarif="$f"
-          done
-        env:
-          GH_TOKEN: ${{ github.token }}
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ./backend/build/reports/**/*.sarif
 
   frontend:
     name: Frontend
