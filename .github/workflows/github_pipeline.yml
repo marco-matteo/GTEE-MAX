@@ -10,6 +10,9 @@ jobs:
       run:
         working-directory: backend
 
+    env:
+      GH_TOKEN: ${{ github.token }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,24 +38,11 @@ jobs:
         with:
           name: junit-results
           path: backend/build/test-results/test/*.xml
-      
-      - name: Merge SARIF files
-        run: |
-          mkdir -p merged_sarifs
-          # Iterate over each SARIF file
-          for sarif in $(find build/reports -name '*.sarif'); do
-            # For each run in the SARIF, create a separate SARIF file by category
-            jq -c '.runs[]' "$sarif" | while read run; do
-              category=$(echo "$run" | jq -r '.tool.driver.name' | tr '[:upper:]' '[:lower:]')
-              # Create a SARIF file with just this run
-              echo "{\"version\":\"2.1.0\",\"runs\":[$run]}" > "merged_sarifs/${category}_$(basename "$sarif")"
-            done
-          done
 
       - name: Upload SARIF files
         if: always()
         run: |
-          for sarif_file in merged_sarifs/*.sarif; do
+          for sarif_file in build/reports/**/*.sarif; do
           echo "Uploading $sarif_file"
           gh api -X POST /repos/${{ github.repository }}/code-scanning/sarifs \
             -F sarif=@$sarif_file
