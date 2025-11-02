@@ -38,17 +38,25 @@ jobs:
       
       - name: Merge SARIF files
         run: |
-          jq -s '{
-            version: "2.1.0",
-            "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
-            runs: map(.runs) | add
-          }' $(find build/reports -name '*.sarif') > merged.sarif
-         
+          mkdir -p merged_sarifs
+          # Iterate over each SARIF file
+          for sarif in $(find build/reports -name '*.sarif'); do
+            # For each run in the SARIF, create a separate SARIF file by category
+            jq -c '.runs[]' "$sarif" | while read run; do
+              category=$(echo "$run" | jq -r '.tool.driver.name' | tr '[:upper:]' '[:lower:]')
+              # Create a SARIF file with just this run
+              echo "{\"version\":\"2.1.0\",\"runs\":[$run]}" > "merged_sarifs/${category}_$(basename "$sarif")"
+            done
+          done
+
       - name: Upload SARIF files
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: backend/merged.sarif
+        run: |
+          for sarif_file in merged_sarifs/*.sarif; do
+          echo "Uploading $sarif_file"
+          gh api -X POST /repos/${{ github.repository }}/code-scanning/sarifs \
+            -F sarif=@$sarif_file
+          done
 
   frontend:
     name: Frontend
