@@ -31,5 +31,3 @@ def test_login():
 
     assert res.status_code == 200
     assert res.headers["set-cookie"].startswith("jwt=")
-    
-test_login()
