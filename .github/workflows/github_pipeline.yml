@@ -2,6 +2,10 @@
 on:
   push:
 
+permissions:
+  security-events: write
+  contents: read
+
 jobs:
   backend:
     name: Backend
@@ -9,6 +13,9 @@ jobs:
     defaults:
       run:
         working-directory: backend
+
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Checkout
@@ -28,6 +35,32 @@ jobs:
 
       - name: Check
         run: ./gradlew check
+
+      - name: Publish JUnit test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: backend/build/test-results/test/*.xml
+
+      - name: Upload SARIF files
+        if: always()
+        run: |
+          for sarif_file in $(find build/reports -name '*.sarif'); do
+            echo "Uploading $sarif_file"
+
+            gzip -c "$sarif_file" > "temp.gz"
+            # base64 encode (no line wraps)
+
+            base64 --wrap=0 temp.gz > b64
+
+            # read base64 into a variable safely
+            sarif_b64="$(cat b64)"
+            gh api -X POST /repos/${{ github.repository }}/code-scanning/sarifs \
+              -F sarif=$sarif_b64 \
+              -F commit_sha="${{ github.sha }}" \
+              -F ref="${{ github.ref }}"
+          done
 
   frontend:
     name: Frontend

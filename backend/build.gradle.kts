@@ -1,3 +1,5 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     kotlin("jvm") version "1.9.23"
     kotlin("plugin.spring") version "1.9.23"
@@ -28,6 +30,9 @@ tasks {
         reports.create("html") {
             required = true
         }
+        reports.create("sarif") {
+            required = true
+        }
     }
     withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         reports {
@@ -47,20 +52,15 @@ detekt {
     parallel = true
 }
 
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        txt.required.set(false)
-        sarif.required.set(true) // Für GitHub Code Scanning
-    }
-}
-
 ktlint {
     android.set(false)
     ignoreFailures.set(false)
     verbose.set(true)
     outputToConsole.set(true)
+    reporters {
+        reporter(ReporterType.SARIF)
+        reporter(ReporterType.PLAIN)
+    }
 }
 
 tasks.test {
